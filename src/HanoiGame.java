@@ -28,8 +28,8 @@ public class HanoiGame {
     public HanoiGame(int n) {
         this.tamProblema = n;
         this.origin = new HanoiTower(n, "Origin", true);
-        this.auxiliar = new HanoiTower(3, "Auxiliar", false);
-        this.destination = new HanoiTower(3, "Destination", false);
+        this.auxiliar = new HanoiTower(n, "Auxiliar", false);
+        this.destination = new HanoiTower(n, "Destination", false);
     }
 
     public HanoiTower getOrigin() {
