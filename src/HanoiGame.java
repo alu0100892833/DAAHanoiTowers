@@ -80,6 +80,7 @@ public class HanoiGame {
     /**
      * Algoritmo que resuelve el problema de las torres de Hanoi para el tamaño planteado.
      * @param debug Ejecuta paso a paso o de forma directa, respectivamente, si es true o false.
+     * @return Número de pasos acumulados.
      */
     private int run(int n, HanoiTower orig, HanoiTower aux, HanoiTower dest, boolean debug) {
         int steps = 0;
@@ -103,6 +104,12 @@ public class HanoiGame {
         return steps;
     }
 
+    /**
+     * Este método muestra información del estado de las anillas y las torres.
+     * Específico para el modo debug.
+     * @param from Torre desde la que se ha movido una anilla.
+     * @param to Torre hacia la que se ha movido una anilla.
+     */
     private void showDebugInformation(HanoiTower from, HanoiTower to) {
         try {
             System.out.println("---> Moviendo desde " + from.getName() + " hacia " + to.getName() + ".");
@@ -112,6 +119,72 @@ public class HanoiGame {
         } catch(IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Este método obtiene la solución mediante el algoritmo cíclico, que está implementado en otra función.
+     */
+    public void cyclicSolution() {
+        int steps = this.clockWise(this.getTamProblema(), this.getOrigin(), this.getDestination(), this.getAuxiliar());
+        System.out.println();
+        System.out.println();
+        System.out.println(this);
+        System.out.println("Problema resuelto en " + steps + " pasos por el algoritmo cíclico.");
+    }
+
+    /**
+     * Este método recursivo busca la solución al problema de forma cíclica, a favor de las agujas del reloj.
+     * Esto quiere decir que los movimientos solo pueden ser X - Y - Z - X o X - Z - Y - X.
+     * No solo se llama recursivamente a sí mismo sino al método de movimientos contrarios a las agujas del reloj para los movimientos X - Z - Y - X.
+     * @param n Tamaño del subproblema.
+     * @param xTower La torre origen.
+     * @param yTower La torre auxiliar.
+     * @param zTower La torre de destino.
+     * @return Número de pasos acumulado.
+     */
+    private int clockWise(int n, HanoiTower xTower, HanoiTower yTower, HanoiTower zTower) {
+        int steps = 0;
+        try {
+            if (n > 0) {
+                steps += this.antiClockWise(n-1, xTower, zTower, yTower);
+                yTower.push(xTower.pop());
+                steps++;
+                steps += this.antiClockWise(n-1, zTower, yTower, xTower);
+                return steps;
+            }
+            return steps;
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return steps;
+    }
+
+    /**
+     * Este método recursivo se complementa con el método clockWise() para resolver el problema de forma cíclica.
+     * Realiza movimientos contrarios a las agujas del reloj: X - Z - Y - X, mientras el otro método se movía X - Y - Z - X.
+     * @param n Tamaño del subproblema.
+     * @param xTower Torre de partida.
+     * @param yTower Torre intermedia.
+     * @param zTower Torre de destino.
+     * @return Número de pasos acumulado.
+     */
+    private int antiClockWise(int n, HanoiTower xTower, HanoiTower yTower, HanoiTower zTower) {
+        int steps = 0;
+        try {
+            if (n > 0) {
+                steps += this.antiClockWise(n-1, xTower, yTower, zTower);
+                zTower.push(xTower.pop());
+                steps++;
+                steps += this.clockWise(n-1, yTower, xTower, zTower);
+                yTower.push(zTower.pop());
+                steps++;
+                steps += this.antiClockWise(n-1, xTower, yTower, zTower);
+            }
+            return steps;
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return steps;
     }
 }
 

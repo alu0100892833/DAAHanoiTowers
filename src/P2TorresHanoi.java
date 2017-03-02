@@ -14,7 +14,8 @@ public class P2TorresHanoi {
                 debug = false;
 
             HanoiGame hanoi = new HanoiGame(tamanio);
-            hanoi.solve(debug);
+            //hanoi.solve(debug);
+            hanoi.cyclicSolution();
 
         } catch(IndexOutOfBoundsException|NumberFormatException e) {
             System.out.println("Debe introducir como parámetro el tamaño del problema.\n\n");
