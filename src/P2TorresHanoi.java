@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 /**
  * Clase principal del programa de las torres de Hanoi.
  * @author Óscar Darias Plasencia
@@ -14,11 +16,15 @@ public class P2TorresHanoi {
                 debug = false;
 
             HanoiGame hanoi = new HanoiGame(tamanio);
-            //hanoi.solve(debug);
-            hanoi.cyclicSolution();
+            hanoi.solve(debug);
+            System.out.println("PULSE ENTER PARA EJECUTAR EL ALGORITMO CÍCLICO. SE MOVERÁN LOS DISCOS DE NUEVO AL ORIGEN. ");
+            System.in.read();
+            hanoi.cyclicSolution(debug);
 
         } catch(IndexOutOfBoundsException|NumberFormatException e) {
             System.out.println("Debe introducir como parámetro el tamaño del problema.\n\n");
+        } catch(IOException e) {
+            e.printStackTrace();
         }
     }
 }

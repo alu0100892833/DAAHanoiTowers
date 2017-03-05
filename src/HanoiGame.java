@@ -88,12 +88,12 @@ public class HanoiGame {
             if (n == 1) {
                 dest.push(orig.pop());
                 steps++;
-                if (debug) this.showDebugInformation(orig, dest);
+                if (debug) this.showDebugInformation(orig, dest, true);
             } else {
                 steps += this.run(n-1, orig, dest, aux, debug);
                 dest.push(orig.pop());
                 steps++;
-                if (debug) this.showDebugInformation(orig, dest);
+                if (debug) this.showDebugInformation(orig, dest, true);
                 steps += this.run(n-1, aux, orig, dest, debug);
                 return steps;
             }
@@ -109,13 +109,15 @@ public class HanoiGame {
      * Específico para el modo debug.
      * @param from Torre desde la que se ha movido una anilla.
      * @param to Torre hacia la que se ha movido una anilla.
+     * @param wait Si es true, espera a que el usuario presione ENTER antes de mostrar cada paso
      */
-    private void showDebugInformation(HanoiTower from, HanoiTower to) {
+    private void showDebugInformation(HanoiTower from, HanoiTower to, boolean wait) {
         try {
             System.out.println("---> Moviendo desde " + from.getName() + " hacia " + to.getName() + ".");
             System.out.println(this);
             System.out.println();
-            System.in.read();
+            if (wait)
+                System.in.read();
         } catch(IOException e) {
             e.printStackTrace();
         }
@@ -124,8 +126,8 @@ public class HanoiGame {
     /**
      * Este método obtiene la solución mediante el algoritmo cíclico, que está implementado en otra función.
      */
-    public void cyclicSolution() {
-        int steps = this.clockWise(this.getTamProblema(), this.getOrigin(), this.getDestination(), this.getAuxiliar());
+    public void cyclicSolution(boolean debug) {
+        int steps = this.clockWise(this.getTamProblema(), this.getDestination(), this.getOrigin(), this.getAuxiliar(), debug);
         System.out.println();
         System.out.println();
         System.out.println(this);
@@ -142,14 +144,15 @@ public class HanoiGame {
      * @param zTower La torre de destino.
      * @return Número de pasos acumulado.
      */
-    private int clockWise(int n, HanoiTower xTower, HanoiTower yTower, HanoiTower zTower) {
+    private int clockWise(int n, HanoiTower xTower, HanoiTower yTower, HanoiTower zTower, boolean debug) {
         int steps = 0;
         try {
             if (n > 0) {
-                steps += this.antiClockWise(n-1, xTower, zTower, yTower);
+                steps += this.antiClockWise(n-1, xTower, zTower, yTower, debug);
                 yTower.push(xTower.pop());
+                this.showDebugInformation(xTower, yTower, false);
                 steps++;
-                steps += this.antiClockWise(n-1, zTower, yTower, xTower);
+                steps += this.antiClockWise(n-1, zTower, yTower, xTower, debug);
                 return steps;
             }
             return steps;
@@ -168,17 +171,19 @@ public class HanoiGame {
      * @param zTower Torre de destino.
      * @return Número de pasos acumulado.
      */
-    private int antiClockWise(int n, HanoiTower xTower, HanoiTower yTower, HanoiTower zTower) {
+    private int antiClockWise(int n, HanoiTower xTower, HanoiTower yTower, HanoiTower zTower, boolean debug) {
         int steps = 0;
         try {
             if (n > 0) {
-                steps += this.antiClockWise(n-1, xTower, yTower, zTower);
+                steps += this.antiClockWise(n-1, xTower, yTower, zTower, debug);
                 zTower.push(xTower.pop());
+                this.showDebugInformation(xTower, zTower, false);
                 steps++;
-                steps += this.clockWise(n-1, yTower, xTower, zTower);
+                steps += this.clockWise(n-1, yTower, xTower, zTower, debug);
                 yTower.push(zTower.pop());
+                this.showDebugInformation(zTower, yTower, false);
                 steps++;
-                steps += this.antiClockWise(n-1, xTower, yTower, zTower);
+                steps += this.antiClockWise(n-1, xTower, yTower, zTower, debug);
             }
             return steps;
         } catch(Exception e) {
