@@ -17,6 +17,7 @@ public class P2TorresHanoi {
 
             HanoiGame hanoi = new HanoiGame(tamanio);
             hanoi.solve(debug);
+            System.out.println();
             System.out.println("PULSE ENTER PARA EJECUTAR EL ALGORITMO CÍCLICO. SE MOVERÁN LOS DISCOS DE NUEVO AL ORIGEN. ");
             System.in.read();
             hanoi.cyclicSolution(debug);

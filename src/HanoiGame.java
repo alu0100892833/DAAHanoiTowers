@@ -150,7 +150,8 @@ public class HanoiGame {
             if (n > 0) {
                 steps += this.antiClockWise(n-1, xTower, zTower, yTower, debug);
                 yTower.push(xTower.pop());
-                this.showDebugInformation(xTower, yTower, false);
+                if (debug)
+                    this.showDebugInformation(xTower, yTower, false);
                 steps++;
                 steps += this.antiClockWise(n-1, zTower, yTower, xTower, debug);
                 return steps;
@@ -177,11 +178,13 @@ public class HanoiGame {
             if (n > 0) {
                 steps += this.antiClockWise(n-1, xTower, yTower, zTower, debug);
                 zTower.push(xTower.pop());
-                this.showDebugInformation(xTower, zTower, false);
+                if (debug)
+                    this.showDebugInformation(xTower, zTower, false);
                 steps++;
                 steps += this.clockWise(n-1, yTower, xTower, zTower, debug);
                 yTower.push(zTower.pop());
-                this.showDebugInformation(zTower, yTower, false);
+                if (debug)
+                    this.showDebugInformation(zTower, yTower, false);
                 steps++;
                 steps += this.antiClockWise(n-1, xTower, yTower, zTower, debug);
             }
