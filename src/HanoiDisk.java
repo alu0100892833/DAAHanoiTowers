@@ -1,5 +1,6 @@
 /**
  * Clase muy básica que representa los discos del juego de las torres de Hanoi.
+ * Tienen un atributo size que representa su tamaño.
  */
 public class HanoiDisk {
 
